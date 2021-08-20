@@ -1,0 +1,85 @@
+name: lando-template
+
+services:
+  php:
+    via: nginx:1.17
+    type: php:7.4
+    webroot: public
+    ssl: true
+    sslExpose: false
+    composer_version: 2
+#    xdebug: true
+#    build:
+#      - composer install
+#    run:
+#      - drush sql:drop -y
+#      - drush sql:cli < db-startup.sql
+#      - drush updatedb -y
+#      - drush config:import -y
+#      - drush php:eval 'node_access_rebuild();'
+#      - drush locale:import cs /app/private/translations/cs.po
+#      - drush cache:rebuild
+#      - drush core:cron
+#      - chmod 444 public/sites/default/settings.php
+#      - chmod 444 public/sites/default/settings.local.php
+  mariadb:
+    type: mariadb:10.3
+    creds:
+      user: mariadb
+      password: mariadb
+      database: mariadb
+  postgres:
+    type: postgres:10
+    creds:
+      user: postgres
+      password: postgres
+      database: postgres
+  node:
+    type: node:10
+  adminer:
+    type: compose
+    services:
+      image: adminer:4-standalone
+      command: php -S [::]:8080 -t /var/www/html
+    ports:
+      - '8080'
+    moreHttpPorts:
+      - '8080'
+    ssl: true
+    sslExpose: false
+  mailhog:
+    type: mailhog
+    portforward: true
+    hogfrom:
+      - php
+    ssl: true
+    sslExpose: false
+proxy:
+  php_nginx:
+    - lando-template.lndo.site
+  adminer:
+    - adminer-lando-template.lndo.site:8080
+  mailhog:
+    - mailhog-lando-template.lndo.site
+
+tooling:
+  node:
+    service: node
+  npm:
+    service: node
+  yarn:
+    service: node
+  xdebug-on:
+    service: php
+    description: Enable xdebug for apache.
+    cmd: "docker-php-ext-enable xdebug && /etc/init.d/apache2 reload"
+    user: root
+  xdebug-off:
+    service: php
+    description: Disable xdebug for apache.
+    cmd: "rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload"
+    user: root
+#  drush:
+#    service: php
+#    env:
+#      DRUSH_OPTIONS_URI: 'https://lando-template.lndo.site'
