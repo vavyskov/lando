@@ -9,7 +9,8 @@ services:
     sslExpose: false
     composer_version: 2
 #    xdebug: true
-#    build:
+    build:
+      - git clone https://gitlab.com/vavyskov/webserver-info.git /tmp/webserver-info && cp -R /tmp/webserver-info/src/. /app/public && rm -fr /tmp/webserver-info
 #      - composer install
 #    run:
 #      - drush sql:drop -y
