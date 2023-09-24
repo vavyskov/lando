@@ -1,16 +1,19 @@
-name: lando-template
+name: project-template
+
+#recipe: drupal10
 
 services:
+#  appserver:
   php:
-    via: nginx:1.17
-    type: php:7.4
+    via: apache:2.4.38
+#    via: nginx:1.23
+    type: php:8.1
     webroot: public
     ssl: true
     sslExpose: false
-    composer_version: 2
+#    composer_version: 2
 #    xdebug: true
-    build:
-      - git clone https://gitlab.com/vavyskov/webserver-info.git /tmp/webserver-info && cp -R /tmp/webserver-info/src/. /app/public && rm -fr /tmp/webserver-info
+#    build:
 #      - composer install
 #    run:
 #      - drush sql:drop -y
@@ -24,7 +27,7 @@ services:
 #      - chmod 444 public/sites/default/settings.php
 #      - chmod 444 public/sites/default/settings.local.php
   mariadb:
-    type: mariadb:10.3
+    type: mariadb:10.4
     creds:
       user: mariadb
       password: mariadb
@@ -36,7 +39,13 @@ services:
       password: postgres
       database: postgres
   node:
-    type: node:10
+    type: node:18
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - mariadb
+    ssl: true
+    sslExpose: false
   adminer:
     type: compose
     services:
@@ -52,12 +61,15 @@ services:
     type: mailhog
     portforward: true
     hogfrom:
+#      - appserver
       - php
     ssl: true
     sslExpose: false
 proxy:
-  php_nginx:
+  php:
     - lando-template.lndo.site
+  phpmyadmin:
+    - phpmyadmin-lando-template.lndo.site
   adminer:
     - adminer-lando-template.lndo.site:8080
   mailhog:
@@ -71,16 +83,35 @@ tooling:
   yarn:
     service: node
   xdebug-on:
+#    service: appserver
     service: php
     description: Enable xdebug for apache.
     cmd: "docker-php-ext-enable xdebug && /etc/init.d/apache2 reload"
     user: root
   xdebug-off:
+#    service: appserver
     service: php
     description: Disable xdebug for apache.
     cmd: "rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload"
     user: root
+#  xdebug-on:
+##    service: appserver
+#    service: php
+#    description: Enable xdebug for nginx.
+#    cmd: docker-php-ext-enable xdebug && pkill -o -USR2 php-fpm
+#    user: root
+#  xdebug-off:
+##    service: appserver
+#    service: php
+#    description: Disable xdebug for nginx.
+#    cmd: rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && pkill -o -USR2 php-fpm
+#    user: root
 #  drush:
+##    service: appserver
 #    service: php
 #    env:
 #      DRUSH_OPTIONS_URI: 'https://lando-template.lndo.site'
+  clone-webserver-info:
+    service: php
+    description: Clone webserver-info project into public directory (backup current public directory).
+    cmd: "mv /app/public /app/public_backup && git clone https://gitlab.com/vavyskov/webserver-info.git /tmp/webserver-info && cp -r /tmp/webserver-info/src/. /app/public && rm -fr /tmp/webserver-info"
