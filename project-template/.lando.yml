@@ -67,13 +67,13 @@ services:
     sslExpose: false
 proxy:
   php:
-    - lando-template.lndo.site
+    - project-template.lndo.site
   phpmyadmin:
-    - phpmyadmin-lando-template.lndo.site
+    - phpmyadmin-project-template.lndo.site
   adminer:
-    - adminer-lando-template.lndo.site:8080
+    - adminer-project-template.lndo.site:8080
   mailhog:
-    - mailhog-lando-template.lndo.site
+    - mailhog-project-template.lndo.site
 
 tooling:
   node:
@@ -110,7 +110,7 @@ tooling:
 ##    service: appserver
 #    service: php
 #    env:
-#      DRUSH_OPTIONS_URI: 'https://lando-template.lndo.site'
+#      DRUSH_OPTIONS_URI: 'https://project-template.lndo.site'
   clone-webserver-info:
     service: php
     description: Clone webserver-info project into public directory (backup current public directory).

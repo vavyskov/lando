@@ -12,3 +12,28 @@ services:
       user: drupal
       password: drupal
       database: drupal
+    config:
+      database: .lando-mariadb.cnf
+  adminer:
+    type: compose
+    services:
+      image: adminer:4-standalone
+      command: php -S [::]:8080 -t /var/www/html
+    ports:
+      - '8080'
+    moreHttpPorts:
+      - '8080'
+    ssl: true
+    sslExpose: false
+  mailhog:
+    type: mailhog
+    portforward: true
+    hogfrom:
+      - appserver
+    ssl: true
+    sslExpose: false
+proxy:
+  adminer:
+    - adminer-drupal.lndo.site:8080
+  mailhog:
+    - mailhog-drupal.lndo.site

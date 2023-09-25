@@ -15,11 +15,11 @@ Možnosti:
 #### Linux:
 
 Dokumentace:
-- [Install using the Apt repository](https://docs.docker.com/engine/install/debian/#install-using-the-repository)
+- [Install using the Apt repository&nbsp;&ndash; Ubuntu](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 - [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user)
 - [Install the plugin manually](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually)
 
-#### Windows (macOS)
+#### Windows
 
 Docker CLI (bez Docker Desktop):
 1. Požadavky:
@@ -29,76 +29,76 @@ Docker CLI (bez Docker Desktop):
      ```
    - CPU s podporout SLAT (Second Level Address Translation)
    - v BIOSu pro CPU povolená virtualizace
-2. Microsoft Store:
-   - Windows Subsystem for Linux (WSL)
-   - Debian:
-     - Zprovoznění "docker" příkazů (WSL Debian):
-       - Instalace Docker CE (WSL Debian):
-         ```
-         sudo apt update &&
-         sudo apt install -y ca-certificates curl gnupg &&
-         sudo install -m 0755 -d /etc/apt/keyrings &&
-         curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg &&
-         sudo chmod a+r /etc/apt/keyrings/docker.gpg &&
-         echo \
-           "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-           "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-           sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
-         sudo apt update &&
-         VERSION_STRING=5:20.10.24~3-0~debian.11~bullseye &&
-         sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
-         sudo apt install -y wget zip unzip mc &&
-         sudo service docker start &&
-         sudo usermod -aG docker $USER &&
-         newgrp docker
-         ```
-       - Kontrola funkčnosti:
-         ```
-         service docker status
-         (sudo service docker start)
-         docker ps
-         docker run hello-world
-         ```
-       - Volitelně Git:
-         - Konfigurace uživatele:
-           ```
-           git config --global user.email "you@example.com"
-           git config --global user.name "Your Name"
-           git config --list
-           ```
-3. PowerShell příkazy:
-    - Instalace WSL:
-      ```
-      wsl --install
-      ```
-    - Instalace distribuce (WSL Debian):
+2. Instalace WSL:
+   - Spustit "Příkazový řádek" nebo "PowerShell" jako **Správce**:
+     - `wsl --install` (nainstaluje WSL a jako výchozí distribuci Ubuntu)
+     - Po restartu počítače počkat na kompletní dokončení instalace (může trvat i několik minut)!!!
+3. Instalace Docker CE: 
+      - WSL Ubuntu:
         ```
-        wsl --install --distribution debian
+        sudo apt update &&
+        sudo apt install -y ca-certificates curl gnupg &&
+        sudo install -m 0755 -d /etc/apt/keyrings &&
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg &&
+        sudo chmod a+r /etc/apt/keyrings/docker.gpg &&
+        echo \
+          "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+          "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
+        sudo apt update &&
+        VERSION_STRING=5:20.10.24~3-0~ubuntu-focal &&
+        sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
+        sudo apt install -y wget zip unzip mc &&
+        sudo service docker start &&
+        sudo usermod -aG docker $USER &&
+        newgrp docker
         ```
-    - Odinstalace distribuce (WSL Debian):
-        ```
-        wsl --unregister debian
-        ```
-    - Volitelné nastavení výchozí distribuce:
-        ```
-        wsl --list --verbose
-        wsl --set-default debian
-        ```
-    - Vypnutí WSL:
-      ```
-      wsl --shutdown
-      ```
-    - Odinstalace WSL:
-      ```
-      wsl --uninstall
-      ```
+        - Kontrola funkčnosti:
+          ```
+          service docker status
+          (sudo service docker start)
+          docker ps
+          docker run hello-world
+          ```
+        - Volitelně Git:
+          - Konfigurace uživatele:
+            ```
+            git config --global user.email "you@example.com"
+            git config --global user.name "Your Name"
+            git config --list
+            ```
+
+Příkazy WSL ("Příkazový řádek" nebo "PowerShell"):
+- Instalace WSL a výchozí Distribuce (Ubuntu):
+  ```
+  wsl --install
+  ```
+- Instalace distribuce Ubuntu:
+  ```
+  wsl --install --distribution ubuntu
+  (wsl --install -d ubuntu)
+  ```
+- Odinstalace distribuce Ubuntu:
+  ```
+  wsl --unregister ubuntu
+  ```
+- Volitelné nastavení výchozí distribuce:
+  ```
+  wsl --list --verbose
+  (wsl --list -v)
+  wsl --set-default ubuntu
+  ```
+- Vypnutí WSL:
+  ```
+  wsl --shutdown
+  ```
 
 ### Lando
 
 Uživatelsky přívětivá vrstva nad virtualizačním nástrojem Docker.
 
 Dokumentace:
-- [Lando installation &ndash; Debian](https://docs.lando.dev/getting-started/installation.html#debian)
+- [Lando installation &ndash; Debian (Ubuntu)](https://docs.lando.dev/getting-started/installation.html#debian)
 
 Instalace:
 - ```
@@ -119,13 +119,15 @@ Základní příkazy:
 - `lando destroy` - smazání projektu (smaže data)
 - `lando poweroff` - zastavení všech kontejnerů
 
-Import důvěryhodné kořenové certifikační autority (Lando Local CA) do prohlížeče:
-- Chrome: 
-  - Nastavení -> Ochrana soukromí a zabezpečení -> Zabezpečení -> Spravovat certifikáty zařízení -> Důvěryhodné kořenové cetifikační autority -> Importovat (`\\wsl.localhost\<distribution>\home\<user>\.lando\certs\lndo.site.crt`)
-- Firefox: 
-  - Nastavení -> Soukromí a zabezpečení -> Zabezpečení -> Zobrazit certifikáty -> Autority -> Import (`\\wsl.localhost\<distribution>\home\<user>\.lando\certs\lndo.site.pem`)
-- Edge: 
-  - Nastavení -> Ochrana osobních údajů, vyhledávání a služby -> Zabezpečení -> Spravovat certifikáty -> Důvěryhodné kořenové cetifikační autority -> Importovat (`\\wsl.localhost\<distribution>\home\<user>\.lando\certs\lndo.site.crt`)
+SSL certifikát:
+1. Import důvěryhodné kořenové certifikační autority (Lando Local CA) do prohlížeče:
+   - Chrome: 
+     - Nastavení -> Ochrana soukromí a zabezpečení -> Zabezpečení -> Spravovat certifikáty zařízení -> Důvěryhodné kořenové cetifikační autority -> Importovat (`\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.crt`)
+   - Firefox: 
+     - Nastavení -> Soukromí a zabezpečení -> Zabezpečení -> Zobrazit certifikáty -> Autority -> Import (`\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.pem`)
+   - Edge: 
+     - Nastavení -> Ochrana osobních údajů, vyhledávání a služby -> Zabezpečení -> Spravovat certifikáty -> Důvěryhodné kořenové cetifikační autority -> Importovat (`\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.crt`)
+2. Restart prohlížeče
 
 Tipy:
 - [Accessing Your Services Externally](https://docs.lando.dev/guides/external-access.html#locking-down-ports)
