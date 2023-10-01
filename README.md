@@ -1,6 +1,6 @@
 # Lando
 
-Vývojové prostředí
+Vývojové prostředí Lando je uživatelsky přívětivá vrstva nad virtualizačním nástrojem Docker.
 
 ## Instalace
 
@@ -94,8 +94,6 @@ Příkazy WSL ("Příkazový řádek" nebo "PowerShell"):
   ```
 
 ### Lando
-
-Uživatelsky přívětivá vrstva nad virtualizačním nástrojem Docker.
 
 Dokumentace:
 - [Lando installation &ndash; Debian (Ubuntu)](https://docs.lando.dev/getting-started/installation.html#debian)
