@@ -46,8 +46,9 @@ Docker CLI (bez Docker Desktop):
           "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
           sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
         sudo apt update &&
-        VERSION_STRING=5:20.10.24~3-0~ubuntu-focal &&
-        sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
+        #VERSION_STRING=5:20.10.24~3-0~ubuntu-jammy &&
+        #sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &&
         sudo apt install -y wget zip unzip mc &&
         sudo service docker start &&
         sudo usermod -aG docker $USER &&
