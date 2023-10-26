@@ -61,6 +61,10 @@ Docker CLI (bez Docker Desktop):
           docker ps
           docker run hello-world
           ```
+          - Zobrazení dostupných verzí Docker CE:
+            ```
+            apt list -a docker-ce
+            ```
         - Volitelně Git:
           - Konfigurace uživatele:
             ```
