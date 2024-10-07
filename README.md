@@ -32,7 +32,8 @@ Docker CLI (bez Docker Desktop):
 2. Instalace WSL:
    - Spustit "Příkazový řádek" nebo "PowerShell" jako **Správce**:
      - `wsl --install` (nainstaluje WSL a jako výchozí distribuci Ubuntu)
-     - Po restartu počítače počkat na kompletní dokončení instalace (může trvat i několik minut)!!!
+   - Restartovat počítač a počkat na kompletní dokončení instalace (může trvat i několik minut)!!!
+     - U nainstalované distribuce si zvolit uživatelské jméno a heslo.
 3. Instalace Docker CLI: 
       - WSL Ubuntu:
         ```
@@ -73,11 +74,15 @@ Docker CLI (bez Docker Desktop):
             git config --list
             ```
 
-Příkazy WSL ("Příkazový řádek" nebo "PowerShell"):
+Základní WSL příkazy ("Příkazový řádek" nebo "PowerShell"):
 - Instalace WSL a výchozí Distribuce (Ubuntu):
   ```
   wsl --install
   ```
+- Nápověda:
+  ```
+  wsl --help 
+  ``` 
 - Instalace distribuce Ubuntu:
   ```
   wsl --install --distribution ubuntu
@@ -92,6 +97,10 @@ Příkazy WSL ("Příkazový řádek" nebo "PowerShell"):
   wsl --list --verbose
   (wsl --list -v)
   wsl --set-default ubuntu
+  ```
+- Aktualizace WSL:
+  ```
+  wsl --update
   ```
 - Vypnutí WSL:
   ```
@@ -136,6 +145,9 @@ Instalace:
 - ```
   /bin/bash -c "$(curl -fsSL https://get.lando.dev/setup-lando.sh)"
   ```
+
+Projekt:
+- Každý projekt udržujte v samostatném adresáři (ideálně pomocí verzovacíhzo systému Git).
 
 Základní příkazy:
 - `lando` - zobrazení nápovědy

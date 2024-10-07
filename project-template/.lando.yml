@@ -33,13 +33,13 @@ services:
       password: mariadb
       database: mariadb
   postgres:
-    type: postgres:10
+    type: postgres:16
     creds:
       user: postgres
       password: postgres
       database: postgres
   node:
-    type: node:18
+    type: node:20
   phpmyadmin:
     type: phpmyadmin
     hosts:
