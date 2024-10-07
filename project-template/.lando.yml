@@ -1,13 +1,13 @@
 name: project-template
 
-#recipe: drupal10
+#recipe: drupal11
 
 services:
 #  appserver:
   php:
-    via: apache:2.4.38
-#    via: nginx:1.23
-    type: php:8.1
+    via: apache:2.4.62
+#    via: nginx:1.26
+    type: php:8.3
     webroot: public
     ssl: true
     sslExpose: false
@@ -27,7 +27,7 @@ services:
 #      - chmod 444 public/sites/default/settings.php
 #      - chmod 444 public/sites/default/settings.local.php
   mariadb:
-    type: mariadb:10.4
+    type: mariadb:11.5
     creds:
       user: mariadb
       password: mariadb

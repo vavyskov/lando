@@ -7,9 +7,9 @@ Vývojové prostředí Lando je uživatelsky přívětivá vrstva nad virtualiza
 ### Docker
 
 Možnosti:
-- Aplikace Docker Desktop (Windows, macOS)
+- Aplikace Docker Desktop (Linux, Windows, macOS)
     - komerční použití zdarma pouze pro **organizace do 250 zaměstnanců** nebo **obratu do 10 mil dolarů ročně**
-- Docker Command Line Interface (Linux, Windows, macOS):
+- **Docker Engine** - Command Line Interface (Linux, Windows, macOS):
     - zdarma
 
 #### Linux:
@@ -33,22 +33,22 @@ Docker CLI (bez Docker Desktop):
    - Spustit "Příkazový řádek" nebo "PowerShell" jako **Správce**:
      - `wsl --install` (nainstaluje WSL a jako výchozí distribuci Ubuntu)
      - Po restartu počítače počkat na kompletní dokončení instalace (může trvat i několik minut)!!!
-3. Instalace Docker CE: 
+3. Instalace Docker CLI: 
       - WSL Ubuntu:
         ```
         sudo apt update &&
-        sudo apt install -y ca-certificates curl gnupg &&
+        sudo apt install -y ca-certificates curl &&
         sudo install -m 0755 -d /etc/apt/keyrings &&
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg &&
-        sudo chmod a+r /etc/apt/keyrings/docker.gpg &&
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc &&
+        sudo chmod a+r /etc/apt/keyrings/docker.asc &&
         echo \
-          "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-          "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+          $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
           sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
         sudo apt update &&
-        #VERSION_STRING=5:20.10.24~3-0~ubuntu-jammy &&
-        #sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
-        sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &&
+        # VERSION_STRING=5:25.0.4-1~ubuntu.22.04~jammy &&
+        # sudo apt install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
+        sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &&
         sudo apt install -y wget zip unzip mc &&
         sudo service docker start &&
         sudo usermod -aG docker $USER &&
@@ -98,16 +98,43 @@ Příkazy WSL ("Příkazový řádek" nebo "PowerShell"):
   wsl --shutdown
   ```
 
+#### macOS
+
+Colima:
+1. Instalace [Homebrew](https://brew.sh/) (MacPorts, Nix atd.). 
+2. Instalace [Colima](https://github.com/abiosoft/colima):
+   - ```
+     brew install docker colima
+     ```
+3. Volitelná instalace Compose pluginu:
+   - ```
+     mkdir -p ~/.docker/cli-plugins &&
+     ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+     ```
+4. Spuštění:
+   - ```
+     colima start
+     ```
+4. Volitelná konfigurace (výchozí hodnoty 2 CPU, 2 GB paměť a 60 GB úložiště):
+   - např. Apple silicon (M1/M2):
+     - ```
+       colima stop
+       colima start --cpu 2 --memory 6 --arch aarch64 --vm-type=vz --vz-rosetta --mount-type=virtiofs
+       ```
+4. Automatické spuštění Colima při zapnutí počítače:
+   - ```
+     brew services start colima
+     ```
+5. Ukončete terminál a spusťte jej znovu.
+
 ### Lando
 
 Dokumentace:
-- [Lando installation &ndash; Debian (Ubuntu)](https://docs.lando.dev/getting-started/installation.html#debian)
+- [Lando installation &ndash; Linux](https://docs.lando.dev/install/linux.html)
 
 Instalace:
 - ```
-  wget https://files.lando.dev/installer/lando-x64-stable.deb &&
-  sudo dpkg -i lando-x64-stable.deb &&
-  rm lando-x64-stable.deb
+  /bin/bash -c "$(curl -fsSL https://get.lando.dev/setup-lando.sh)"
   ```
 
 Základní příkazy:
@@ -124,12 +151,12 @@ Základní příkazy:
 
 SSL certifikát:
 1. Import důvěryhodné kořenové certifikační autority (Lando Local CA) do prohlížeče:
-   - Chrome: 
-     - Nastavení -> Ochrana soukromí a zabezpečení -> Zabezpečení -> Spravovat certifikáty zařízení -> Důvěryhodné kořenové cetifikační autority -> Importovat (`\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.crt`)
-   - Firefox: 
-     - Nastavení -> Soukromí a zabezpečení -> Zabezpečení -> Zobrazit certifikáty -> Autority -> Import (`\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.pem`)
-   - Edge: 
-     - Nastavení -> Ochrana osobních údajů, vyhledávání a služby -> Zabezpečení -> Spravovat certifikáty -> Důvěryhodné kořenové cetifikační autority -> Importovat (`\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.crt`)
+   - Chrome -> Nastavení -> Ochrana soukromí a zabezpečení -> Zabezpečení -> Spravovat certifikáty zařízení -> Důvěryhodné kořenové cetifikační autority -> Importovat
+     - `\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.crt`
+   - Firefox -> Nastavení -> Soukromí a zabezpečení -> Zabezpečení -> Zobrazit certifikáty -> Autority -> Import
+     - `\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.pem`
+   - Edge -> Nastavení -> Ochrana osobních údajů, vyhledávání a služby -> Zabezpečení -> Spravovat certifikáty -> Důvěryhodné kořenové cetifikační autority -> Importovat
+     - `\\wsl$\<distribution>\home\<user>\.lando\certs\lndo.site.crt`
 2. Restart prohlížeče
 
 Tipy:
