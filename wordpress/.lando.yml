@@ -7,6 +7,12 @@ config:
   database: mariadb:11.5
 
 services:
+  appserver:
+    build_as_root:
+      - apt-get update && apt-get install -y zip mc
+      - mkdir -p /home/www-data/.config/mc
+      - printf "[Midnight-Commander]\nuse_internal_edit=1\n" > /home/www-data/.config/mc/ini
+      - chown -R www-data:www-data /home/www-data/.config
   adminer:
     type: compose
     services:

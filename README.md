@@ -30,82 +30,108 @@ Docker CLI (bez Docker Desktop):
    - CPU s podporout SLAT (Second Level Address Translation)
    - v BIOSu pro CPU povolená virtualizace
 2. Instalace WSL:
-   - Spustit "Příkazový řádek" nebo "PowerShell" jako **Správce**:
-     - `wsl --install` (nainstaluje WSL a jako výchozí distribuci Ubuntu)
+   - Jako **správce** spustit "Terminál", "PowerShell" nebo "Příkazový řádek" a nainstalovat pouze WSL:
+     - `wsl --install --no-distribution`
+     - `(wsl --install)` - instalace WSL s výchozí distribucí Ubuntu pro účet "správce"
    - Restartovat počítač a počkat na kompletní dokončení instalace (může trvat i několik minut)!!!
+3. Instalace Linux distribuce v profilu uživatele: 
+   - Zobrazení dostupných distribucí:
+     - ```
+       wsl --list --online
+       ```
+   - Instalace požadované Linux distribuce:
+     - ```
+       wsl --install --distribution debian
+       (wsl --install -d debian)
+       wsl --install --distribution ubuntu
+       (wsl --install -d ubuntu)
+       ```
      - U nainstalované distribuce si zvolit uživatelské jméno a heslo.
-3. Instalace Docker CLI: 
-      - WSL Ubuntu:
-        ```
-        sudo apt update &&
-        sudo apt install -y ca-certificates curl &&
-        sudo install -m 0755 -d /etc/apt/keyrings &&
-        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc &&
-        sudo chmod a+r /etc/apt/keyrings/docker.asc &&
-        echo \
-          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-          $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
-        sudo apt update &&
-        # VERSION_STRING=5:25.0.4-1~ubuntu.22.04~jammy &&
-        # sudo apt install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin &&
-        sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &&
-        sudo apt install -y wget zip unzip mc &&
-        sudo service docker start &&
-        sudo usermod -aG docker $USER &&
-        newgrp docker
-        ```
-        - Kontrola funkčnosti:
-          ```
-          service docker status
-          (sudo service docker start)
-          docker ps
-          docker run hello-world
-          ```
-          - Zobrazení dostupných verzí Docker CE:
-            ```
-            apt list -a docker-ce
-            ```
-        - Volitelně Git:
-          - Konfigurace uživatele:
-            ```
-            git config --global user.email "you@example.com"
-            git config --global user.name "Your Name"
-            git config --list
-            ```
-
-Základní WSL příkazy ("Příkazový řádek" nebo "PowerShell"):
-- Instalace WSL a výchozí Distribuce (Ubuntu):
-  ```
-  wsl --install
-  ```
-- Nápověda:
-  ```
-  wsl --help 
-  ``` 
-- Instalace distribuce Ubuntu:
-  ```
-  wsl --install --distribution ubuntu
-  (wsl --install -d ubuntu)
-  ```
-- Odinstalace distribuce Ubuntu:
-  ```
-  wsl --unregister ubuntu
-  ```
-- Volitelné nastavení výchozí distribuce:
-  ```
-  wsl --list --verbose
-  (wsl --list -v)
-  wsl --set-default ubuntu
-  ```
-- Aktualizace WSL:
-  ```
-  wsl --update
-  ```
-- Vypnutí WSL:
-  ```
-  wsl --shutdown
-  ```
+   - Další WSL příkazy:
+     - Nápověda:
+       ```
+       wsl --help 
+       ```
+     - Odinstalace distribuce (včetně jejich dat):
+       ```
+       wsl --unregister debian
+       wsl --unregister ubuntu
+       ```
+     - Volitelné nastavení výchozí distribuce např. Debian:
+       ```
+       wsl --list --verbose
+       (wsl --list -v)
+       wsl --set-default debian
+       ```
+     - Aktualizace WSL:
+       ```
+       wsl --update
+       ```
+     - Vypnutí WSL:
+       ```
+       wsl --shutdown
+       ```
+3. Instalace Docker CLI do WSL distribuce: 
+   - WSL Debian:
+     ```
+     sudo apt update &&
+     sudo apt install -y ca-certificates curl &&
+     sudo install -m 0755 -d /etc/apt/keyrings &&
+     sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&
+     sudo chmod a+r /etc/apt/keyrings/docker.asc &&
+     echo \
+       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+       $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
+     sudo apt-get update &&
+     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &&
+     sudo apt install -y wget zip unzip mc &&
+     sudo service docker start &&
+     sudo usermod -aG docker $USER &&
+     newgrp docker
+     ```
+   - WSL Ubuntu:
+     ```
+     sudo apt update &&
+     sudo apt install -y ca-certificates curl &&
+     sudo install -m 0755 -d /etc/apt/keyrings &&
+     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc &&
+     sudo chmod a+r /etc/apt/keyrings/docker.asc &&
+     echo \
+       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+       $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
+     sudo apt update &&
+     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &&
+     sudo apt install -y wget zip unzip mc &&
+     sudo service docker start &&
+     sudo usermod -aG docker $USER &&
+     newgrp docker
+     ```
+4. Kontrolad funkčnosti Docker instalace ve WSL distribuci:        
+   ```
+   service docker status
+   (sudo service docker start)
+   docker ps
+   docker run hello-world
+   ```
+5. Volitelně ve WSL distribuci (Debian, Ubuntu):
+   - Zobrazení verze WSL distribuce:
+     ```
+     cat /etc/os-release
+     ```
+   - Aktualizace WSL distribuce:
+     ```
+     sudo apt update
+     sudo apt upgrade
+     ```
+   - Konfigurace Git uživatele:
+     ```
+     git config --list
+     git config --global user.email "you@example.com"
+     git config --global user.name "Your Name"
+     git config --list
+     ```
 
 #### macOS
 
@@ -141,10 +167,32 @@ Colima:
 Dokumentace:
 - [Lando installation &ndash; Linux](https://docs.lando.dev/install/linux.html)
 
-Instalace:
-- ```
-  /bin/bash -c "$(curl -fsSL https://get.lando.dev/setup-lando.sh)"
-  ```
+Instalace Lando ve WSL distribuci:
+1. Instalace Lando:
+   ```
+   /bin/bash -c "$(curl -fsSL https://get.lando.dev/setup-lando.sh)"
+   ```
+2. Volitelně:
+      - Zobrazení dostupných verzí Docker CE (CLI):
+        ```
+        sudo apt update
+        apt list -a docker-ce
+        ```
+      - Změna verze Docker CE (CLI):
+          - Debian:
+            ```
+            VERSION_STRING=5:26.1.1-1~debian.12~bookworm
+            sudo apt install -y --allow-downgrades docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING
+            ```    
+          - Ubuntu
+            ```
+            VERSION_STRING=5:26.1.1-1~ubuntu.22.04~jammy
+            sudo apt install -y --allow-downgrades docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING
+            ```    
+      - Zobrazení aktuální verze:
+        ```
+        docker --version
+        ```
 
 Projekt:
 - Každý projekt udržujte v samostatném adresáři (ideálně pomocí verzovacíhzo systému Git).

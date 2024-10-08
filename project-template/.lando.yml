@@ -9,6 +9,11 @@ services:
 #    via: nginx:1.26
     type: php:8.3
     webroot: public
+    build_as_root:
+      - apt-get update && apt-get install -y zip mc
+      - mkdir -p /home/www-data/.config/mc
+      - printf "[Midnight-Commander]\nuse_internal_edit=1\n" > /home/www-data/.config/mc/ini
+      - chown -R www-data:www-data /home/www-data/.config
     ssl: true
     sslExpose: false
 #    composer_version: 2
@@ -32,6 +37,8 @@ services:
       user: mariadb
       password: mariadb
       database: mariadb
+    config:
+      database: .lando-mariadb.cnf
   postgres:
     type: postgres:16
     creds:
