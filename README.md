@@ -202,7 +202,8 @@ Základní příkazy:
 - `lando init` - průvodce založením nového projektu (vytvoří soubor .lando.yml)
 - **`lando start`** - spuštění projektu (v aktuálním adresáři)
 - `lando info` - zobrazení informací o projektu (např. heslo k databázi)
-- `lando ssh` - vstup do terminálu
+- **`lando ssh`** - vstup do terminálu
+  - `exit` opuštění terminálu
 - `lando restart` - restart projektu
 - `lando rebuild` - znovunačtení konfigurace (zachová data)
 - **`lando stop`** - zastavení projektu (v aktuálním adresáři)
