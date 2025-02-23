@@ -139,9 +139,9 @@ Colima:
 1. Instalace [Homebrew](https://brew.sh/) (MacPorts, Nix atd.). 
 2. Instalace [Colima](https://github.com/abiosoft/colima):
    - ```
-     brew install docker colima
+     brew install docker docker-compose colima
      ```
-3. Volitelná instalace Compose pluginu:
+3. Konfigurace Compose pluginu (vyžadováno např. při používání parametru `--env-file`):
    - ```
      mkdir -p ~/.docker/cli-plugins &&
      ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
@@ -161,6 +161,8 @@ Colima:
      brew services start colima
      ```
 5. Ukončete terminál a spusťte jej znovu.
+
+Případnou vlastní certifikační autoritu např. mkcert přidejte do aplikace Klíčenka -> Systém -> Certifikáty a povolte její "důvěryhodnost".
 
 ### Lando
 
